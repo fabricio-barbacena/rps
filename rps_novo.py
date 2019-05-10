@@ -97,7 +97,7 @@ class Same_move_player(Player):
 
 class Rock_player(Same_move_player):
         """
-        A subclass of the Same_move_player subclass, which always plays rock.
+        A subclass of the Same_move_player subclass.
 
         Arg:
             param(name): a str with the player's name.
