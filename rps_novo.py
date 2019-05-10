@@ -25,7 +25,7 @@ class Player:
         Define the Player class of the rock-paper-scissors module.
 
         Arg:
-            param(name): a string with the player's name
+            param(name): a str with the player's name.
 
         Attributes:
             my_move_recorder: initial value is None. It will change to record
@@ -40,10 +40,10 @@ class Player:
     def move(self):
         """
         Choose randomly one of the three option available in the 'moves' list
-        and set it as the new value of my_move_recorder
+        and set it as the new value of my_move_recorder.
         
         Return (str):
-            The value of my_move_recorder
+            The value of my_move_recorder.
         """
         my_move = moves[(random.randint(0,2))]
         return my_move
@@ -58,10 +58,10 @@ class Player:
         reproduze the oponent's moves.
 
         Arg:
-            param1 (str) = the player's move, played in the round
-            param2 (str) = the enemy's move, played in the round
+            param1 (str) = the player's move, played in the round.
+            param2 (str) = the enemy's move, played in the round.
 
-        Return (str)
+        Return: (str)
             
         """
         self.my_move_recorder = my_move
@@ -71,19 +71,40 @@ class Player:
 
 class Same_move_player(Player):
     def __init__(self, name):
+        """
+        Define a subclass of Player, which always plays the same move.
+
+        Arg:
+            param(name): a str with the player's name.
+
+        Attributes:
+            my_move_recorder(str): set by choosing randomly one element of
+                the 'moves' list, which stays the same during all the game.
+        """
         Player.__init__(self, name)
         self.my_move_recorder = random.choice(moves)
 
     def move(self):
+        """Return the player's move set when he was created."""
         return self.my_move_recorder
 
 
 class Rock_player(Same_move_player):
+        """
+        A subclass of the Same_move_player subclass, which always plays rock.
+
+        Arg:
+            param(name): a str with the player's name.
+
+        Attributes:
+            my_move_recorder(str): set to 'rock'.
+        """
     def __init__(self, name):
         Player.__init__(self, name)
         self.my_move_recorder = 'rock'
 
     def move(self):
+        """return 'rock' all the times"""
         return self.my_move_recorder
 
 
