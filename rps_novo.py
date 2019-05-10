@@ -27,7 +27,7 @@ class Player:
         Define the Player class of the rock-paper-scissors module.
 
         Arg:
-            param(name): a str with the player's name.
+            param1 (name): a str with the player's name.
 
         Attributes:
             my_move_recorder: initial value is None. It will change to record
@@ -45,7 +45,7 @@ class Player:
         and set it as the new value of my_move_recorder.
         
         Return (str):
-            The value of my_move_recorder.
+            The value of choosen move.
         """
         my_move = moves[(random.randint(0,2))]
         return my_move
@@ -60,8 +60,8 @@ class Player:
         reproduze the oponent's moves.
 
         Arg:
-            param1 (str) = the player's move, played in the round.
-            param2 (str) = the enemy's move, played in the round.
+            param1 (str) = the player's move, played in that round.
+            param2 (str) = the enemy's move, played in that round.
 
         Return: (str)
             
