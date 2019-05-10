@@ -82,6 +82,10 @@ class Same_move_player(Player):
         Attributes:
             my_move_recorder(str): set by choosing randomly one element of
                 the 'moves' list, which stays the same during all the game.
+
+        Inherit from the Player class:
+            - the enemy_move_recorder attribute
+            - the learn method
         """
         Player.__init__(self, name)
         self.my_move_recorder = random.choice(moves)
@@ -100,6 +104,10 @@ class Rock_player(Same_move_player):
 
         Attributes:
             my_move_recorder(str): set to 'rock'.
+
+        Inherit from the Player class:
+            - the enemy_move_recorder attribute
+            - the learn method
         """
     def __init__(self, name):
         Player.__init__(self, name)
