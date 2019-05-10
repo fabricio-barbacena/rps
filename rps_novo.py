@@ -5,23 +5,43 @@ import math
 import itertools
 import pprint
 
+"""
+This program plays a game of Rock, Paper, Scissors between two Players,
+and reports both Player's scores each round
 
-"""This program plays a game of Rock, Paper, Scissors between two Players,
-and reports both Player's scores each round."""
+RPS stands for 'rock-paper-scissors'
+This list includes the three possible moves, and will be used by both
+Player and Game classes, besides their subclasses.
+"""
 
 moves = ['rock', 'paper', 'scissors']
 
-"""The Player class is the parent class for all of the Players
-in this game"""
+""""""
 
 
 class Player:
     def __init__(self, name):
+        """
+        Define the Player class of the rock-paper-scissors module. The
+        Player class is the parent class for all the Players objets
+        in this module.
+
+        Args:
+            param1(name): a string with the player's name
+
+        Variables:
+            my_move_recorder: initial value is None. It will change to record
+                the player's last move.
+            enemy_move_recorder: initial value is None. It will change to
+                record the oponent's last move.
+        """
+            
         self.name = name
         self.my_move_recorder = None
         self.enemy_move_recorder = None
 
     def move(self):
+        
         move = moves[(random.randint(0,2))]
         self.my_move_recorder = move
         return self.my_move_recorder
