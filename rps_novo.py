@@ -6,12 +6,14 @@ import itertools
 import pprint
 
 """
-This program plays a game of Rock, Paper, Scissors between two Players,
-and reports both Player's scores each round
+    This program defines objects to play games and championships of Rock, Paper,
+Scissors between two players or more players, but always placed in games
+between two players.
 
-RPS stands for 'rock-paper-scissors'
-This list includes the three possible moves, and will be used by both
-Player and Game classes, besides their subclasses.
+    RPS stands for 'rock-paper-scissors'
+
+    The list below includes the three possible moves, and will be used by all
+the classes of players and games.
 """
 
 moves = ['rock', 'paper', 'scissors']
