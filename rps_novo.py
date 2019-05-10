@@ -22,31 +22,48 @@ moves = ['rock', 'paper', 'scissors']
 class Player:
     def __init__(self, name):
         """
-        Define the Player class of the rock-paper-scissors module. The
-        Player class is the parent class for all the Players objets
-        in this module.
+        Define the Player class of the rock-paper-scissors module.
 
-        Args:
-            param1(name): a string with the player's name
+        Arg:
+            param(name): a string with the player's name
 
-        Variables:
+        Attributes:
             my_move_recorder: initial value is None. It will change to record
                 the player's last move.
             enemy_move_recorder: initial value is None. It will change to
                 record the oponent's last move.
         """
-            
         self.name = name
         self.my_move_recorder = None
         self.enemy_move_recorder = None
 
     def move(self):
+        """
+        Choose randomly one of the three option available in the 'moves' list
+        and set it as the new value of my_move_recorder
         
-        move = moves[(random.randint(0,2))]
-        self.my_move_recorder = move
-        return self.my_move_recorder
+        Return (str):
+            The value of my_move_recorder
+        """
+        my_move = moves[(random.randint(0,2))]
+        return my_move
 
     def learn(self, my_move, enemy_move):
+        """
+        Inside the play_round method (from the Game class), take the
+        moves of both players and register in the respective variables.
+
+        In this current version of the module, this method is built with
+        the only purpose of giving the Copycat_player information to
+        reproduze the oponent's moves.
+
+        Arg:
+            param1 (str) = the player's move, played in the round
+            param2 (str) = the enemy's move, played in the round
+
+        Return (str)
+            
+        """
         self.my_move_recorder = my_move
         self.enemy_move_recorder = enemy_move
         return self.enemy_move_recorder
@@ -81,15 +98,15 @@ class Cyclic_player(Player):
         return self.my_move_recorder
 
     def move(self):
-        if self.my_move_recorder == 'rock':
-            self.my_move_recorder = 'paper'
-            return 'paper'
-        elif self.my_move_recorder == 'paper':
-            self.my_move_recorder = 'scissors'
-            return 'scissors'
+        if self.setup_executed == False:
+            self.setup_choice()
         else:
-            self.my_move_recorder = 'rock'
-            return 'rock'
+            if self.my_move_recorder == 'rock':
+                return 'paper'
+            elif self.my_move_recorder == 'paper':
+                return 'scissors'
+            else:
+                return 'rock'
 
 
 class Human_player(Player):
@@ -155,9 +172,7 @@ class Game:
         move1 = self.p[0].move()
         move2 = self.p[1].move()
         self.print_speed(f'\n{self.p[0].name}: {move1}  '
-                         f'{self.p[1].name}: {move2}')
-        self.p[0].move_recorder = move1  # ver o que  essas duas linhas
-        self.p[1].move_recorder = move2  # estão fazendo
+                         f'{self.p[1].name}: {move2}') 
         winner = self.round_winner(move1, move2)
         self.p[0].learn(move1, move2)
         self.p[1].learn(move2, move1)

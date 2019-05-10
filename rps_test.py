@@ -1,4 +1,13 @@
-import turtle
+import rps_novo as rps
+
+p1 = rps.Copycat_player('p1')
+p2 = rps.Copycat_player('p2')
+players = [p1, p2]
+game = rps.Game_rounds(players, 'Jogo', 5, False)
+
+game.play_game()
+
+"""import turtle
 
 t = turtle.Turtle()
 
@@ -10,8 +19,6 @@ t.pencolor('red')
 t.fillcolor('black')
 t.fd(100)
 t.color('blue')
-
-"""
 
 
 import shutil
