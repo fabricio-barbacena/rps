@@ -20,12 +20,11 @@ moves = ['rock', 'paper', 'scissors']
 
 
 class Player:
-    def __init__(self, name):
         """
         Define the Player class of the rock-paper-scissors module.
 
         Arg:
-            param1 (name): a str with the player's name.
+            param(name): a str with the player's name.
 
         Attributes:
             my_move_recorder: initial value is None. It will change to record
@@ -33,6 +32,7 @@ class Player:
             enemy_move_recorder: initial value is None. It will change to
                 record the oponent's last move.
         """
+    def __init__(self, name):
         self.name = name
         self.my_move_recorder = None
         self.enemy_move_recorder = None
@@ -70,7 +70,6 @@ class Player:
 
 
 class Same_move_player(Player):
-    def __init__(self, name):
         """
         Define a subclass of Player, which always plays the same move.
 
@@ -85,6 +84,7 @@ class Same_move_player(Player):
             - the enemy_move_recorder attribute
             - the learn method
         """
+    def __init__(self, name):
         Player.__init__(self, name)
         self.my_move_recorder = random.choice(moves)
 
@@ -117,16 +117,48 @@ class Rock_player(Same_move_player):
 
 
 class Cyclic_player(Player):
+        """
+        Define a subclass of Player, which at first randomly chooses one move
+        and then, in the next rounds, cycles through the other moves.
+
+        Arg:
+            param(name): a str with the player's name.
+
+        Attributes:
+            setup_executed: Initial value is False. When the move method is
+                called for the first time, it will also call the setup_choice
+                method, and then the setup_executed attribute wil change to
+                True.
+            my_move_recorder(str): set randomly when the Cyclic_player is
+                created, then it will change following the patterns in the
+                move method.
+
+        Inherit from the Player class:
+            - the enemy_move_recorder attribute
+            - the learn method
+        """
     def __init__(self, name):
         Player.__init__(self, name)
         self.setup_executed = False
         self.my_move_recorder = random.choice(moves)
 
     def setup_choice(self):
+        """
+        set the setup_executed attribute to True and return the value of
+        my_move_recorder (a str)
+        """
         self.setup_executed = True
         return self.my_move_recorder
 
     def move(self):
+        """
+        The first time this method is called, setup_executed will still be
+        False, so the setup method is called.
+
+        In the next calls of the move method, cycle through the three movements.
+
+        return a str.
+        """
         if self.setup_executed == False:
             self.setup_choice()
         else:
