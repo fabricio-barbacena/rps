@@ -7,7 +7,7 @@ import pprint
 
 """
     This program defines objects to play games and championships of Rock, Paper,
-Scissors between two players or more players, but always placed in games
+Scissors between two or more players, but always placed in games
 between two players.
 
     RPS stands for 'rock-paper-scissors'
@@ -17,8 +17,6 @@ the classes of players and games.
 """
 
 moves = ['rock', 'paper', 'scissors']
-
-""""""
 
 
 class Player:
@@ -41,7 +39,7 @@ class Player:
 
     def move(self):
         """
-        Choose randomly one of the three option available in the 'moves' list
+        Choose randomly one of the three available option in the 'moves' list
         and set it as the new value of my_move_recorder.
         
         Return (str):
@@ -91,7 +89,7 @@ class Same_move_player(Player):
         self.my_move_recorder = random.choice(moves)
 
     def move(self):
-        """Return the player's move set when he was created."""
+        """Return the player's move set when the player was created."""
         return self.my_move_recorder
 
 
