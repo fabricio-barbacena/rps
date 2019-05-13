@@ -171,16 +171,9 @@ class Cyclic_player(Player):
 
 
 class Human_player(Player):
-    def __init__(self, name='Human Player'):
+    def __init__(self, name):
         Player.__init__(self, name)
-        self.name = self.name_input()
-
-    def name_input(self):
-        if self.name == 'Human Player':
-            return self.name
-        else:
-            self.name = input("\nWhat player's name do you choose for yourself? ")
-            return self.name
+        self.name = name
 
     def move(self):
         move = (input(f'{self.name.upper()}, time to play!\n\n'
@@ -525,9 +518,11 @@ if __name__ == '__main__':
 
     players = [p1, p2]
 
-    game = Game_wins(players, "Final Challenge", 3)
+    game1 = Game_rounds(players, "Semi-final", 3)
+    game2 = Game_rounds(players, "Final Challenge", 3)
 
-    game.play_game()
+    game1.play_game()
+    game2.play_game()
 
 """
 if __name__ == '__main__':
