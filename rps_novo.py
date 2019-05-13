@@ -20,18 +20,18 @@ moves = ['rock', 'paper', 'scissors']
 
 
 class Player:
-        """
-        Define the Player class of the rock-paper-scissors module.
+    """
+    Define the Player class of the rock-paper-scissors module.
 
-        Arg:
-            param(name): a str with the player's name.
+    Arg:
+        param(name): a str with the player's name.
 
-        Attributes:
-            my_move_recorder: initial value is None. It will change to record
-                the player's last move.
-            enemy_move_recorder: initial value is None. It will change to
-                record the oponent's last move.
-        """
+    Attributes:
+        my_move_recorder: initial value is None. It will change to record
+            the player's last move.
+        enemy_move_recorder: initial value is None. It will change to
+            record the oponent's last move.
+    """
     def __init__(self, name):
         self.name = name
         self.my_move_recorder = None
@@ -62,7 +62,7 @@ class Player:
             param2 (str) = the enemy's move, played in that round.
 
         Return: (str)
-            
+          
         """
         self.my_move_recorder = my_move
         self.enemy_move_recorder = enemy_move
@@ -70,20 +70,20 @@ class Player:
 
 
 class Same_move_player(Player):
-        """
-        Define a subclass of Player, which always plays the same move.
+    """
+    Define a subclass of Player, which always plays the same move.
 
-        Arg:
-            param(name): a str with the player's name.
+    Arg:
+        param(name): a str with the player's name.
 
-        Attributes:
-            my_move_recorder(str): set by choosing randomly one element of
-                the 'moves' list, which stays the same during all the game.
+    Attributes:
+        my_move_recorder(str): set by choosing randomly one element of
+            the 'moves' list, which stays the same during all the game.
 
-        Inherit from the Player class:
-            - the enemy_move_recorder attribute
-            - the learn method
-        """
+    Inherit from the Player class:
+        - the enemy_move_recorder attribute
+        - the learn method
+    """
     def __init__(self, name):
         Player.__init__(self, name)
         self.my_move_recorder = random.choice(moves)
@@ -94,19 +94,19 @@ class Same_move_player(Player):
 
 
 class Rock_player(Same_move_player):
-        """
-        A subclass of the Same_move_player subclass.
+    """
+    A subclass of the Same_move_player subclass.
 
-        Arg:
-            param(name): a str with the player's name.
+    Arg:
+        param(name): a str with the player's name.
 
-        Attributes:
-            my_move_recorder(str): set to 'rock'.
+    Attributes:
+        my_move_recorder(str): set to 'rock'.
 
-        Inherit from the Player class:
-            - the enemy_move_recorder attribute
-            - the learn method
-        """
+    Inherit from the Player class:
+        - the enemy_move_recorder attribute
+        - the learn method
+    """
     def __init__(self, name):
         Player.__init__(self, name)
         self.my_move_recorder = 'rock'
@@ -117,26 +117,26 @@ class Rock_player(Same_move_player):
 
 
 class Cyclic_player(Player):
-        """
-        Define a subclass of Player, which at first randomly chooses one move
-        and then, in the next rounds, cycles through the other moves.
+    """
+    Define a subclass of Player, which at first randomly chooses one move
+    and then, in the next rounds, cycles through the other moves.
 
-        Arg:
-            param(name): a str with the player's name.
+    Arg:
+        param(name): a str with the player's name.
 
-        Attributes:
-            setup_executed: Initial value is False. When the move method is
-                called for the first time, it will also call the setup_choice
-                method, and then the setup_executed attribute wil change to
-                True.
-            my_move_recorder(str): set randomly when the Cyclic_player is
-                created, then it will change following the patterns in the
-                move method.
+    Attributes:
+        setup_executed: Initial value is False. When the move method is
+            called for the first time, it will also call the setup_choice
+            method, and then the setup_executed attribute wil change to
+            True.
+        my_move_recorder(str): set randomly when the Cyclic_player is
+            created, then it will change following the patterns in the
+            move method.
 
-        Inherit from the Player class:
-            - the enemy_move_recorder attribute
-            - the learn method
-        """
+    Inherit from the Player class:
+        - the enemy_move_recorder attribute
+        - the learn method
+    """
     def __init__(self, name):
         Player.__init__(self, name)
         self.setup_executed = False
@@ -171,9 +171,16 @@ class Cyclic_player(Player):
 
 
 class Human_player(Player):
-    def __init__(self, name=None):
+    def __init__(self, name='Human Player'):
         Player.__init__(self, name)
-        self.name = input("\nWhat player's name do you choose for yourself? ")
+        self.name = self.name_input()
+
+    def name_input(self):
+        if self.name == 'Human Player':
+            return self.name
+        else:
+            self.name = input("\nWhat player's name do you choose for yourself? ")
+            return self.name
 
     def move(self):
         move = (input(f'{self.name.upper()}, time to play!\n\n'
@@ -512,8 +519,17 @@ class Championship_points(Championship):
         print(final)
 
 
+if __name__ == '__main__':
+    p1 = Human_player()
+    p2 = Player('p2')
 
+    players = [p1, p2]
 
+    game = Game_wins(players, "Final Challenge", 3)
+
+    game.play_game()
+
+"""
 if __name__ == '__main__':
     p1 = Player('p1')
     p2 = Player('p2')
@@ -527,8 +543,6 @@ if __name__ == '__main__':
     champ.play_championship()
 
 
-
-"""
 if __name__ == '__main__':
     number_of_players = 4
     players = []
