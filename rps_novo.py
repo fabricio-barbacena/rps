@@ -269,7 +269,7 @@ class Game:
         self.print_slow = print_slow 
 
     def print_speed(self, str):
-        """Print the strings followed by a pause of 2 seconds, if the print_slow
+        """Print a string followed by a pause of 2 seconds, if the print_slow
         variable is set to True.
         Just call the print function, if the print_slow variable is False.
 
@@ -283,6 +283,9 @@ class Game:
             print(str)
 
     def check_players(self):
+        """Print a message and return 'not OK' if the lenght of players
+        list in the game is different of 2.
+        """
         if len(self.p) != 2:
             print('We need 2 players in the Game, no more, no less.\n'
                   'Please reset the game.\n')
@@ -290,6 +293,19 @@ class Game:
 
 
     def play_round(self):
+        """Play a round of rps inside the game, following these steps:
+
+        - First, play_round calls the move method for each player;
+        - The players' moves are printed in a message;
+        - The learn method is called for each player and the respective moves
+        are stored in her/his/its my_move_recorder and my_enemy_recorder
+        variables;
+        - The round_winner method is called and becomes the value of the
+        winner variable;
+        - A message is printed, declaring the round final result.
+
+        Return the winner variable (a str).
+        """
         move1 = self.p[0].move()
         move2 = self.p[1].move()
         self.print_speed(f'\n{self.p[0].name}: {move1}  '
@@ -305,6 +321,21 @@ class Game:
 
 
     def round_winner(self, move1, move2):
+        """Establish the round winner, according to standard rps rules:
+            - rock beats scissors;
+            - scissors beats paper;
+            - paper beats rock.
+
+        If the players play the same move, it is a tie.
+
+        Keyword arguments:
+            - param1(move1) -- the move played by the first player (a str);
+            - param2(move2) -- the move played by the second player (a str);
+
+        return:
+            - the name of the player who won; or
+            - the str 'tie'.
+        """
         if move1 == move2:
             return 'tie'
         elif (move1 == 'rock' and move2 == 'scissors' or
@@ -315,6 +346,15 @@ class Game:
             return self.p[1].name
 
     def play_game(self):
+        """Play a complete game of rps, with one round, following these steps:
+
+            - Print the game name;
+            - Print 'Game Start';
+            - call the check_players method;
+                - stop the game if the check_players call returns 'not OK';
+            - call the play_round method;
+            - print 'Game over'.
+        """
         self.print_speed(f'\n{self.name.upper()}\n')
         self.print_speed('\nGame start!\n')
         number_players = self.check_players()
