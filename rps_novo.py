@@ -47,10 +47,10 @@ class Player:
 
     def move(self):
         """Choose one of the three available options in the 'moves' list.
-                
+
         Return a str (the value of the randomly choosen move).
         """
-        my_move = moves[(random.randint(0,2))]
+        my_move = moves[(random.randint(0, 2))]
         return my_move
 
     def learn(self, my_move, enemy_move):
@@ -154,11 +154,11 @@ class Cyclic_player(Player):
         """The first time this method is called, setup_executed will still be
         False, so the setup method is called.
 
-        In the next calls of the move method, cycle through the three movements.
+        In the next calls of the move method, cycle through the three moves.
 
         Return a str.
         """
-        if self.setup_executed == False:
+        if not self.setup_executed:
             self.setup_choice()
         else:
             if self.my_move_recorder == 'rock':
@@ -206,14 +206,14 @@ class Human_player(Player):
 class Copycat_player(Player):
     """Define a subclass of Player, which chooses a first random move and then
     copies the move played by its opponent in the previous round.
-    
+
     Keyword arguments:
         param(name): a str with the player's name.
 
     Instance variables:
         self.first_movement (default: False) -- it will change to True
             after the move method is called for the first time.
-            
+
     Inherit from the Player class:
         - the my_move_recorder variable;
         - the enemy_move_recorder variable;
@@ -222,7 +222,6 @@ class Copycat_player(Player):
     def __init__(self, name):
         Player.__init__(self, name)
         self.first_movement = False
-        
 
     def first_move(self):
         """Set the first_movement variable to True and chooses one of the three
@@ -240,7 +239,7 @@ class Copycat_player(Player):
 
         Return a str.
         """
-        if self.first_movement == False:
+        if not self.first_movement:
             return self.first_move()
         else:
             move = self.enemy_move_recorder
@@ -253,7 +252,7 @@ class Game:
     This is the parent class to the following subclasses:
         - Game_rounds;
         - Game_wins.
-        
+
     Keyword arguments:
         param1(p) -- a list of players objects, which must have a length of 2.
             Otherwise, the check_players method will not allow the game
@@ -261,12 +260,12 @@ class Game:
         param2(name) -- a str with the name of the game.
         param3(print_slow) -- a bool which controls the print_speed method and
             defines if the messages printed in the game will have a pause after
-            it or not (Default: True).   
+            it or not (Default: True).
     """
     def __init__(self, p, name, print_slow=True):
         self.p = p
         self.name = name
-        self.print_slow = print_slow 
+        self.print_slow = print_slow
 
     def print_speed(self, str):
         """Print a string followed by a pause of 2 seconds, if the print_slow
@@ -276,7 +275,7 @@ class Game:
         Argument:
             param(str) -- the str to be printed.
         """
-        if self.print_slow == True:
+        if self.print_slow:
             print(str)
             time.sleep(2)
         else:
@@ -290,7 +289,6 @@ class Game:
             print('We need 2 players in the Game, no more, no less.\n'
                   'Please reset the game.\n')
             return 'not OK'
-
 
     def play_round(self):
         """Play a round of rps inside the game, following these steps:
@@ -309,7 +307,7 @@ class Game:
         move1 = self.p[0].move()
         move2 = self.p[1].move()
         self.print_speed(f'\n{self.p[0].name}: {move1}  '
-                         f'{self.p[1].name}: {move2}') 
+                         f'{self.p[1].name}: {move2}')
         winner = self.round_winner(move1, move2)
         self.p[0].learn(move1, move2)
         self.p[1].learn(move2, move1)
@@ -317,8 +315,7 @@ class Game:
             self.print_speed(f'\n** IT IS A TIE! **\n')
         else:
             self.print_speed(f'\n** {winner.upper()} WINS! **\n')
-            return winner 
-
+            return winner
 
     def round_winner(self, move1, move2):
         """Establish the round winner, according to standard rps rules:
@@ -397,7 +394,7 @@ class Game_rounds(Game):
                 if winner == self.p[0].name:
                     self.p[0].wins += 1
                 elif winner == self.p[1].name:
-                    self.p[1].wins += 1            
+                    self.p[1].wins += 1
                 else:
                     pass
             self.print_speed('Game over!\n')
@@ -424,7 +421,7 @@ class Game_rounds(Game):
 
 
 class Game_wins(Game):
-    def __init__(self, p, name, wins, print_slow=True ):
+    def __init__(self, p, name, wins, print_slow=True):
         Game.__init__(self, p, name)
         self.wins = wins
         self.print_slow = print_slow
@@ -471,7 +468,6 @@ class Game_wins(Game):
             self.p[1].wins = 0
             return winner_end
 
-
     def final_winner(self):
         if self.p[0].wins == self.wins:
             self.print_speed(f'FINAL SCORE \nAFTER {self.round-1} ROUNDS:\n')
@@ -503,14 +499,14 @@ class Championship():
         self.phase_names = []
 
     def print_speed(self, str):
-        if self.print_slow == True:
+        if self.print_slow:
             print(str)
             time.sleep(2)
         else:
             print(str)
 
     def check_players(self):
-        if len(self.p) not in [2**x for x in range(1,12)]:
+        if len(self.p) not in [2**x for x in range(1, 12)]:
             print('\nFor this kind of Championship, we need the number of '
                   'players to be one of the following:\n\n'
                   '2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 or 2048.\n\n'
@@ -532,8 +528,8 @@ class Championship():
 
     def set_phase(self):
         self.games = []
-        self.pair_players = [[self.players_phase[x],self.players_phase[x+1]]
-                             for x in range(0,int(len(self.players_phase)),2)]
+        self.pair_players = [[self.players_phase[x], self.players_phase[x+1]]
+                             for x in range(0, len(self.players_phase), 2)]
         for index in range(len(self.pair_players)):
             name = 'Game ' + str(index+1)
             self.games.append(Game_wins(self.pair_players[index], name,
@@ -563,7 +559,7 @@ class Championship():
         self.print_speed('The final champion is')
         self.print_speed(f'\n** {self.players_phase[0].name}**\n')
         self.print_speed('CONGRATULATIONS, '
-                         f'{self.players_phase[0].name.upper()}!\n') 
+                         f'{self.players_phase[0].name.upper()}!\n')
 
 
 class Championship_points(Championship):
@@ -576,7 +572,7 @@ class Championship_points(Championship):
         self.games = []
 
     def print_speed(self, str):
-        if self.print_slow == True:
+        if self.print_slow:
             print(str)
             time.sleep(2)
         else:
@@ -590,9 +586,12 @@ class Championship_points(Championship):
 
     def set_games(self):
         for pair in self.players_pairs:
-            self.games.append(Game_wins(pair, 'Game ' +
-                                          str(self.players_pairs.index(pair)+1),
-                                          3, self.game_print_slow))
+            self.games.append(Game_wins(pair,
+                                        'Game ' +
+                                        str(self.players_pairs.index(pair)+1),
+                                        3,
+                                        self.game_print_slow)
+                              )
 
     def play_championship(self):
         points = self.points
@@ -607,18 +606,18 @@ class Championship_points(Championship):
 
     def sorting_wins(self):
         final = sorted(self.points.items(), reverse=True,
-                       key = lambda kv:(kv[1], kv[0]))
+                       key=lambda kv: (kv[1], kv[0]))
         print()
         print(final)
 
 
 if __name__ == '__main__':
-    p1 = Human_player("Fabrício")
+    p1 = Cyclic_player("Fabrício")
     p2 = Player('p2')
 
     players = [p1, p2]
 
-    game1 = Game_rounds(rounds=3, name="Semi-final", p=players)
+    game1 = Game_rounds(rounds=5, name="Semi-final", p=players)
     game2 = Game_rounds(players, "Final Challenge", 3)
 
     game1.play_game()
@@ -650,4 +649,3 @@ if __name__ == '__main__':
         champ.game_print_slow = False
     champ.play_championship()
 """
-
