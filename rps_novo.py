@@ -61,7 +61,7 @@ class Player:
             param1 (str) = the player's move, played in that round.
             param2 (str) = the enemy's move, played in that round.
 
-        Return: (str)
+        Return: a str with the enemy_move_recorder value
           
         """
         self.my_move_recorder = my_move
@@ -206,18 +206,44 @@ class Human_player(Player):
 
 
 class Copycat_player(Player):
+    """
+    Define a subclass of Player, which chooses a first random move and then
+    copies the move played by its opponent in the previous round.
+    
+    Arg:
+        param(name): a str with the player's name.
+
+    Attributes:
+        self.first_movement: set initially to False, it will change to True
+            after the move method is called for the first time.
+            
+    Inherit from the Player class:
+        - the my_move_recorder attribute
+        - the enemy_move_recorder attribute
+        - the learn method
+    """
     def __init__(self, name):
         Player.__init__(self, name)
         self.first_movement = False
-        self.my_move_recorder = None
-        self.enemy_move_recorder = None
+        
 
     def first_move(self):
+        """
+        Set the first_movement attribute to true and chooses one of the three
+        elements of the 'move' list as the Copycat_player first move".
+        """
         self.first_movement = True
         self.my_move_recorder = random.choice(moves)
         return self.my_move_recorder
 
     def move(self):
+        """
+        If first_movement == false, call the first_move method.
+        If first_movement == true, copy the value of the enemy_move_recorder
+        attribute.
+
+        Return: a str
+        """
         if self.first_movement == False:
             return self.first_move()
         else:
