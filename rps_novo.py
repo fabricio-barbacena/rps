@@ -171,18 +171,34 @@ class Cyclic_player(Player):
 
 
 class Human_player(Player):
+    """
+    Define a subclass of Player, where a Human player inputs what moves
+    she/he wants to play.
+
+    Arg:
+        param(name): a str with the player's name.
+
+    Inherit from the Player class:
+        - the my_move_recorder attribute
+        - the enemy_move_recorder attribute
+        - the learn method
+    """
     def __init__(self, name):
         Player.__init__(self, name)
         self.name = name
 
     def move(self):
+        """ask for the input of the Human_player's move.
+
+        A while loop will run as long the input option is not in the 'moves'
+        list.
+
+        Return: a str with the player's move.
+        """
         move = (input(f'{self.name.upper()}, time to play!\n\n'
                       '\tRock, paper, scissors? > ').
                 strip(string.punctuation + ' ').lower())
         while move not in moves:
-            """if move in ['quit', 'exit', 'leave']:
-                print('\n leaving the game...\n...\n')
-                break"""
             move = (input("\tRock, paper, scissors? > ").
                     strip(string.punctuation + ' ').lower())
         self.my_move_recorder = move
