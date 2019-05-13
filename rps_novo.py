@@ -6,12 +6,14 @@ import itertools
 import pprint
 
 """
-    This program defines objects to play games and championships of Rock, Paper,
-Scissors between two or more players, but always placed in games
-between two players.
+    This program defines classes in order to play single games and complete
+    championships of Rock, Paper, Scissors between two or more players, but
+    always with games between two players.
 
-    RPS stands for 'rock-paper-scissors'
+    RPS stands for 'rock-paper-scissors'.
+"""
 
+"""
     The list below includes the three possible moves, and will be used by all
 the classes of players and games.
 """
@@ -20,17 +22,23 @@ moves = ['rock', 'paper', 'scissors']
 
 
 class Player:
-    """
-    Define the Player class of the rock-paper-scissors module.
+    """Define the Player class of the rock-paper-scissors module.
 
-    Arg:
-        param(name): a str with the player's name.
+    It is the parent class to the following subclasses:
+        - Same_move_player;
+        - Rock_player;
+        - Cyclic_player;
+        - Human_player;
+        - Copycat_player.
 
-    Attributes:
-        my_move_recorder: initial value is None. It will change to record
-            the player's last move.
-        enemy_move_recorder: initial value is None. It will change to
-            record the oponent's last move.
+    Keyword argument:
+        param(name) -- a str with the player's name.
+
+    Instance variables:
+        my_move_recorder (default: None) -- This variable will change to
+            record the player's last move.
+        enemy_move_recorder (default: None) -- This variable will change to
+            record the opponent's last move.
     """
     def __init__(self, name):
         self.name = name
@@ -38,31 +46,26 @@ class Player:
         self.enemy_move_recorder = None
 
     def move(self):
-        """
-        Choose randomly one of the three available option in the 'moves' list
-        and set it as the new value of my_move_recorder.
-        
-        Return (str):
-            The value of choosen move.
+        """Choose one of the three available options in the 'moves' list.
+                
+        Return a str (the value of the randomly choosen move).
         """
         my_move = moves[(random.randint(0,2))]
         return my_move
 
     def learn(self, my_move, enemy_move):
-        """
-        Inside the play_round method (from the Game class), take the
-        moves of both players and register in the respective variables.
+        """Inside the play_round method (from the Game class), take the
+        moves of both players and register them in the respective variables.
 
         In this current version of the module, this method is built with
         the only purpose of giving the Copycat_player information to
         reproduze the oponent's moves.
 
-        Arg:
-            param1 (str) = the player's move, played in that round.
-            param2 (str) = the enemy's move, played in that round.
+        Keyword arguments:
+            param1(str) -- the player's move, played in that round.
+            param2(str) -- the enemy's move, played in that round.
 
-        Return: a str with the enemy_move_recorder value
-          
+        Return a str (the value of enemy_move_recorder).
         """
         self.my_move_recorder = my_move
         self.enemy_move_recorder = enemy_move
@@ -70,42 +73,40 @@ class Player:
 
 
 class Same_move_player(Player):
-    """
-    Define a subclass of Player, which always plays the same move.
+    """Define a subclass of Player, which always plays the same move.
 
-    Arg:
+    Keyword argument:
         param(name): a str with the player's name.
 
-    Attributes:
-        my_move_recorder(str): set by choosing randomly one element of
+    Instance variable:
+        my_move_recorder(str) -- set by choosing randomly one element of
             the 'moves' list, which stays the same during all the game.
 
     Inherit from the Player class:
-        - the enemy_move_recorder attribute
-        - the learn method
+        - the enemy_move_recorder instance variable;
+        - the learn method.
     """
     def __init__(self, name):
         Player.__init__(self, name)
         self.my_move_recorder = random.choice(moves)
 
     def move(self):
-        """Return the player's move set when the player was created."""
+        """Return the my_move_recorder variable"""
         return self.my_move_recorder
 
 
 class Rock_player(Same_move_player):
-    """
-    A subclass of the Same_move_player subclass.
+    """A subclass of the Same_move_player subclass.
 
-    Arg:
-        param(name): a str with the player's name.
+    Keyword argument:
+        param(name) -- a str with the player's name.
 
-    Attributes:
-        my_move_recorder(str): set to 'rock'.
+    Instance variables:
+        my_move_recorder(str) -- set to 'rock'.
 
     Inherit from the Player class:
-        - the enemy_move_recorder attribute
-        - the learn method
+        - the enemy_move_recorder instance variable;
+        - the learn method.
     """
     def __init__(self, name):
         Player.__init__(self, name)
@@ -117,25 +118,24 @@ class Rock_player(Same_move_player):
 
 
 class Cyclic_player(Player):
-    """
-    Define a subclass of Player, which at first randomly chooses one move
+    """Define a subclass of Player, which at first randomly chooses one move
     and then, in the next rounds, cycles through the other moves.
 
-    Arg:
-        param(name): a str with the player's name.
+    Keyword argument:
+        param(name) -- a str with the player's name.
 
-    Attributes:
-        setup_executed: Initial value is False. When the move method is
+    Instance variables:
+        setup_executed (bool. Default: False) -- when the move method is
             called for the first time, it will also call the setup_choice
-            method, and then the setup_executed attribute wil change to
+            method, and then the setup_executed variable wil change to
             True.
-        my_move_recorder(str): set randomly when the Cyclic_player is
+        my_move_recorder(str) -- set randomly when the Cyclic_player is
             created, then it will change following the patterns in the
             move method.
 
     Inherit from the Player class:
-        - the enemy_move_recorder attribute
-        - the learn method
+        - the enemy_move_recorder variable;
+        - the learn method.
     """
     def __init__(self, name):
         Player.__init__(self, name)
@@ -143,21 +143,20 @@ class Cyclic_player(Player):
         self.my_move_recorder = random.choice(moves)
 
     def setup_choice(self):
-        """
-        set the setup_executed attribute to True and return the value of
-        my_move_recorder (a str)
+        """ Change the setup_executed variable to True.
+
+        Return the value of my_move_recorder (a str).
         """
         self.setup_executed = True
         return self.my_move_recorder
 
     def move(self):
-        """
-        The first time this method is called, setup_executed will still be
+        """The first time this method is called, setup_executed will still be
         False, so the setup method is called.
 
         In the next calls of the move method, cycle through the three movements.
 
-        return a str.
+        Return a str.
         """
         if self.setup_executed == False:
             self.setup_choice()
@@ -171,29 +170,28 @@ class Cyclic_player(Player):
 
 
 class Human_player(Player):
-    """
-    Define a subclass of Player, where a Human player inputs what moves
+    """Define a subclass of Player, where a Human player inputs what moves
     she/he wants to play.
 
-    Arg:
-        param(name): a str with the player's name.
+    Keyword argument:
+        param(name) -- a str with the player's name.
 
     Inherit from the Player class:
-        - the my_move_recorder attribute
-        - the enemy_move_recorder attribute
-        - the learn method
+        - the my_move_recorder instance variable;
+        - the enemy_move_recorder instance variable;
+        - the learn method.
     """
     def __init__(self, name):
         Player.__init__(self, name)
         self.name = name
 
     def move(self):
-        """ask for the input of the Human_player's move.
+        """Ask for the Human_player's to type her/his move.
 
-        A while loop will run as long the input option is not in the 'moves'
-        list.
+        A while loop will run as long as the input option is not in the
+        'moves' list.
 
-        Return: a str with the player's move.
+        Return a str with the player's move.
         """
         move = (input(f'{self.name.upper()}, time to play!\n\n'
                       '\tRock, paper, scissors? > ').
@@ -206,21 +204,20 @@ class Human_player(Player):
 
 
 class Copycat_player(Player):
-    """
-    Define a subclass of Player, which chooses a first random move and then
+    """Define a subclass of Player, which chooses a first random move and then
     copies the move played by its opponent in the previous round.
     
-    Arg:
+    Keyword arguments:
         param(name): a str with the player's name.
 
-    Attributes:
-        self.first_movement: set initially to False, it will change to True
+    Instance variables:
+        self.first_movement (default: False) -- it will change to True
             after the move method is called for the first time.
             
     Inherit from the Player class:
-        - the my_move_recorder attribute
-        - the enemy_move_recorder attribute
-        - the learn method
+        - the my_move_recorder variable;
+        - the enemy_move_recorder variable;
+        - the learn method.
     """
     def __init__(self, name):
         Player.__init__(self, name)
@@ -228,8 +225,7 @@ class Copycat_player(Player):
         
 
     def first_move(self):
-        """
-        Set the first_movement attribute to true and chooses one of the three
+        """Set the first_movement variable to True and chooses one of the three
         elements of the 'move' list as the Copycat_player first move".
         """
         self.first_movement = True
@@ -237,12 +233,12 @@ class Copycat_player(Player):
         return self.my_move_recorder
 
     def move(self):
-        """
-        If first_movement == false, call the first_move method.
-        If first_movement == true, copy the value of the enemy_move_recorder
-        attribute.
+        """If first_movement == False, call the first_move method.
 
-        Return: a str
+        If first_movement == True, copy the value of the enemy_move_recorder
+        variable.
+
+        Return a str.
         """
         if self.first_movement == False:
             return self.first_move()
@@ -252,12 +248,34 @@ class Copycat_player(Player):
 
 
 class Game:
+    """Define the Game class of the rock-paper-scissors module.
+
+    This is the parent class to the following subclasses:
+        - Game_rounds;
+        - Game_wins.
+        
+    Keyword arguments:
+        param1(p) -- a list of players objects, which must have a length of 2.
+            Otherwise, the check_players method will not allow the game
+            to continue.
+        param2(name) -- a str with the name of the game.
+        param3(print_slow) -- a bool which controls the print_speed method and
+            defines if the messages printed in the game will have a pause after
+            it or not (Default: True).   
+    """
     def __init__(self, p, name, print_slow=True):
         self.p = p
         self.name = name
         self.print_slow = print_slow 
 
     def print_speed(self, str):
+        """Print the strings followed by a pause of 2 seconds, if the print_slow
+        variable is set to True.
+        Just call the print function, if the print_slow variable is False.
+
+        Argument:
+            param(str) -- the str to be printed.
+        """
         if self.print_slow == True:
             print(str)
             time.sleep(2)
@@ -555,12 +573,12 @@ class Championship_points(Championship):
 
 
 if __name__ == '__main__':
-    p1 = Human_player()
+    p1 = Human_player("Fabrício")
     p2 = Player('p2')
 
     players = [p1, p2]
 
-    game1 = Game_rounds(players, "Semi-final", 3)
+    game1 = Game_rounds(rounds=3, name="Semi-final", p=players)
     game2 = Game_rounds(players, "Final Challenge", 3)
 
     game1.play_game()
