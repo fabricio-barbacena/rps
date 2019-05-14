@@ -364,7 +364,7 @@ class Game:
 
 
 class Game_rounds(Game):
-    """Define a subsclass of Game.
+    """Define a Game subsclass.
 
     Keyword arguments:
         param1(p) -- a list of players objects, which must have a length of 2.
@@ -377,8 +377,8 @@ class Game_rounds(Game):
             it or not (Default: True).
 
     Instance variables:
-        - p[0].wins -- register the first player's wins;
-        - p[1].wins -- register the second player's wins;
+        - p[0].wins -- register the first player's wins (initial value: 0);
+        - p[1].wins -- register the second player's wins (initial value: 0).
             
     Inherit from the Game class the following methods:
         - print_speed;
@@ -404,11 +404,12 @@ class Game_rounds(Game):
 
     def play_game(self):
         """Play a complete game of rps, with the number of rounds defined by the
-        rounds attribute and following these steps:
+        rounds attribute and the following steps:
 
             - Print the game name and "Game Start";
             - call the check_players method;
                 - stop the game if the check_players call returns 'not OK';
+            - call the introduction method;
             - call the play_round method in a for loop
                     (number of loops = rounds attribute);
                 - increment one to p[0].wins or to p[1].wins
@@ -458,6 +459,29 @@ class Game_rounds(Game):
 
 
 class Game_wins(Game):
+    """Define a Game subsclass.
+
+    Keyword arguments:
+        param1(p) -- a list of players objects, which must have a length of 2.
+            Otherwise, the check_players method will not allow the game
+            to continue.
+        param2(name) -- a str with the name of the game.
+        param3(wins) -- a int with the round wins necessary to win the Game.
+        param4(print_slow) -- a bool which controls the print_speed method and
+            defines if the messages printed in the game will have a pause after
+            it or not (Default: True).
+
+    Instance variables:
+        - round -- register the number of rounds played (initial value: 1);
+        - p[0].wins -- register the first player's wins (initial value: 0);
+        - p[1].wins -- register the second player's wins (initial value: 0);
+            
+    Inherit from the Game class the following methods:
+        - print_speed;
+        - check_players;
+        - play_round;
+        - round_winner.
+    """
     def __init__(self, p, name, wins, print_slow=True):
         Game.__init__(self, p, name)
         self.wins = wins
@@ -467,6 +491,7 @@ class Game_wins(Game):
         self.p[1].wins = 0
 
     def introduction(self):
+        """Print introductory messages, explaining how the game works."""
         self.print_speed(f'The player who gets {self.wins} victories first '
                          'wins the Game!\n')
         self.print_speed('There is no limit of rounds here.\n')
@@ -475,6 +500,23 @@ class Game_wins(Game):
                          'at the 50th round.\n')
 
     def play_game(self):
+        """Play a complete game of rps, with the following steps:
+
+            - Print the game name and "Game Start";
+            - Call the check_players method;
+                - Stop the game if the check_players call returns 'not OK';
+            - Call the introduction method;
+            - Call the play_round method in a while loop
+                - The loop will end if one of the players reaches the number of wins);
+                - The loop will break if the game reaches 50 rounds;
+                - Increment one to p[0].wins or to p[1].wins in every round
+                    (depending on the round winner);
+                - If there is a tie: p[0].wins and p[1].wins stay the same;
+                - Each loop increments one unit to the rounds attribute;
+            - Print 'Game over' and call the final_winner method;
+            - Finally, p[0].wins and p[1].wins are set to 0 again (so that the players
+                    might be used in another game, in a championship class).
+        """
         self.print_speed(f'\n{self.name.upper()}\n')
         self.print_speed('\nGame start!\n')
         number_players = self.check_players()
@@ -490,10 +532,10 @@ class Game_wins(Game):
                 print()
                 if winner == self.p[0].name:
                     self.p[0].wins += 1
-                    winner_end = self.p[0]
+                    winner_end = self.p[0] # testar essa linha. O que ela está fazendo?
                 elif winner == self.p[1].name:
                     self.p[1].wins += 1
-                    winner_end = self.p[1]
+                    winner_end = self.p[1] # testar essa linha. O que ela está fazendo?
                 else:
                     pass
                 self.print_speed(f'{self.p[0].name}: {self.p[0].wins}, '
@@ -503,10 +545,12 @@ class Game_wins(Game):
             self.final_winner()
             self.p[0].wins = 0
             self.p[1].wins = 0
-            return winner_end
+            return winner_end # testar essa linha. O que ela está fazendo?
 
     def final_winner(self):
+        
         if self.p[0].wins == self.wins:
+        """Declare who is the final winner or if the game ended in a tie."""
             self.print_speed(f'FINAL SCORE \nAFTER {self.round-1} ROUNDS:\n')
             self.print_speed(f'{self.p[0].name}: {self.p[0].wins}, '
                              f'{self.p[1].name}: {self.p[1].wins}\n\n')
