@@ -364,7 +364,28 @@ class Game:
 
 
 class Game_rounds(Game):
-    
+    """Define a subsclass of Game.
+
+    Keyword arguments:
+        param1(p) -- a list of players objects, which must have a length of 2.
+            Otherwise, the check_players method will not allow the game
+            to continue.
+        param2(name) -- a str with the name of the game.
+        param3(rounds) -- a int with the number of rounds in the Game.
+        param4(print_slow) -- a bool which controls the print_speed method and
+            defines if the messages printed in the game will have a pause after
+            it or not (Default: True).
+
+    Instance variables:
+        - p[0].wins -- register the first player's wins;
+        - p[1].wins -- register the second player's wins;
+            
+    Inherit from the Game class the following methods:
+        - print_speed;
+        - check_players;
+        - play_round;
+        - round_winner.
+    """
     def __init__(self, p, name, rounds, print_slow=True):
         Game.__init__(self, p, name)
         self.rounds = rounds
@@ -373,6 +394,7 @@ class Game_rounds(Game):
         self.p[1].wins = 0
 
     def introduction(self):
+        """Print introductory messages, explaining how the game works."""
         self.print_speed(f'This game has {self.rounds} rounds.\n')
         self.print_speed('The player who has more victories after '
                          'all the rounds is the final winner!\n')
@@ -381,6 +403,19 @@ class Game_rounds(Game):
         self.print_speed('it will be declared a draw.\n\n')
 
     def play_game(self):
+        """Play a complete game of rps, with the number of rounds defined by the
+        rounds attribute and following these steps:
+
+            - Print the game name and "Game Start";
+            - call the check_players method;
+                - stop the game if the check_players call returns 'not OK';
+            - call the play_round method in a for loop
+                    (number of loops = rounds attribute);
+                - increment one to p[0].wins or to p[1].wins
+                    (depending on the round winner).
+                - if there is a tie: p[0].wins and p[1].wins stay the same.
+            - print 'Game over' and call the final_winner method.
+        """
         self.print_speed(f'\n{self.name.upper()}\n')
         self.print_speed('\nGame start!\n')
         number_players = self.check_players()
@@ -402,6 +437,7 @@ class Game_rounds(Game):
             self.final_winner()
 
     def final_winner(self):
+        """Declare who is the final winner or if the game ended in a tie."""
         if self.p[0].wins > self.p[1].wins:
             self.print_speed(f'FINAL SCORE\nAFTER {self.rounds} ROUNDS:\n')
             self.print_speed(f'{self.p[0].name}: {self.p[0].wins}, '
