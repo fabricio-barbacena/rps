@@ -7,14 +7,14 @@ import pprint
 
 """
     This program defines classes in order to play single games and complete
-    championships of Rock, Paper, Scissors between two or more players, but
-    always with games between two players.
+championships of Rock, Paper, Scissors between two or more players, but
+always with games between two players.
 
-    RPS stands for 'rock-paper-scissors'.
+    RPS stands for 'Rock, Paper, Scissors'.
 """
 
 """
-    The list below includes the three possible moves, and will be used by all
+    The list below includes the three possible moves and will be used by all
 the classes of players and games.
 """
 
@@ -22,7 +22,7 @@ moves = ['rock', 'paper', 'scissors']
 
 
 class Player:
-    """Define the Player class of the rock-paper-scissors module.
+    """Define the Player class of the Rock, Paper, Scissors module.
 
     It is the parent class to the following subclasses:
         - Same_move_player;
@@ -50,7 +50,7 @@ class Player:
 
         Return a str (the value of the randomly choosen move).
         """
-        my_move = moves[(random.randint(0, 2))]
+        my_move = random.choice(moves)
         return my_move
 
     def learn(self, my_move, enemy_move):
@@ -62,10 +62,10 @@ class Player:
         reproduze the oponent's moves.
 
         Keyword arguments:
-            param1(str) -- the player's move, played in that round.
-            param2(str) -- the enemy's move, played in that round.
+            param1(my_move) -- the player's move in that round (a str).
+            param2(enemy_move) -- the enemy's move in that round (a str).
 
-        Return a str (the value of enemy_move_recorder).
+        Return a str.
         """
         self.my_move_recorder = my_move
         self.enemy_move_recorder = enemy_move
@@ -113,7 +113,7 @@ class Rock_player(Same_move_player):
         self.my_move_recorder = 'rock'
 
     def move(self):
-        """return 'rock' all the times"""
+        """return 'rock'."""
         return self.my_move_recorder
 
 
@@ -152,7 +152,7 @@ class Cyclic_player(Player):
 
     def move(self):
         """The first time this method is called, setup_executed will still be
-        False, so the setup method is called.
+        False, so call the setup method.
 
         In the next calls of the move method, cycle through the three moves.
 
@@ -170,7 +170,7 @@ class Cyclic_player(Player):
 
 
 class Human_player(Player):
-    """Define a subclass of Player, where a Human player inputs what moves
+    """Define a subclass of Player, where a human player inputs what moves
     she/he wants to play.
 
     Keyword argument:
@@ -224,7 +224,7 @@ class Copycat_player(Player):
         self.first_movement = False
 
     def first_move(self):
-        """Set the first_movement variable to True and chooses one of the three
+        """Set the first_movement variable to True and choose one of the three
         elements of the 'move' list as the Copycat_player first move".
         """
         self.first_movement = True
@@ -247,7 +247,7 @@ class Copycat_player(Player):
 
 
 class Game:
-    """Define the Game class of the rock-paper-scissors module.
+    """Define the Game class of the Rock, Paper, Scissors module.
 
     This is the parent class to the following subclasses:
         - Game_rounds;
@@ -364,6 +364,7 @@ class Game:
 
 
 class Game_rounds(Game):
+    
     def __init__(self, p, name, rounds, print_slow=True):
         Game.__init__(self, p, name)
         self.rounds = rounds
