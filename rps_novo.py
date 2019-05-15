@@ -272,7 +272,7 @@ class Game:
         variable is set to True.
         Just call the print function, if the print_slow variable is False.
 
-        Argument:
+        Keyword argument:
             param(str) -- the str to be printed.
         """
         if self.print_slow:
@@ -502,12 +502,12 @@ class Game_wins(Game):
     def play_game(self):
         """Play a complete game of rps, with the following steps:
 
-            - Print the game name and "Game Start";
+            - Print the Game name and "Game Start";
             - Call the check_players method;
                 - Stop the game if the check_players call returns 'not OK';
             - Call the introduction method;
-            - Call the play_round method in a while loop
-                - The loop will end if one of the players reaches the number of wins);
+            - Call the play_round method in a while loop:
+                - The loop will end if one of the players reaches the number of wins;
                 - The loop will break if the game reaches 50 rounds;
                 - Increment one to p[0].wins or to p[1].wins in every round
                     (depending on the round winner);
@@ -515,7 +515,7 @@ class Game_wins(Game):
                 - Each loop increments one unit to the rounds attribute;
             - Print 'Game over' and call the final_winner method;
             - Finally, p[0].wins and p[1].wins are set to 0 again (so that the players
-                    might be used in another game, in a championship class).
+                    might be used in another game, in a Championship class).
         """
         self.print_speed(f'\n{self.name.upper()}\n')
         self.print_speed('\nGame start!\n')
@@ -548,9 +548,8 @@ class Game_wins(Game):
             return winner_end # testar essa linha. O que ela está fazendo?
 
     def final_winner(self):
-        
-        if self.p[0].wins == self.wins:
         """Declare who is the final winner or if the game ended in a tie."""
+        if self.p[0].wins == self.wins:
             self.print_speed(f'FINAL SCORE \nAFTER {self.round-1} ROUNDS:\n')
             self.print_speed(f'{self.p[0].name}: {self.p[0].wins}, '
                              f'{self.p[1].name}: {self.p[1].wins}\n\n')
@@ -570,16 +569,48 @@ class Game_wins(Game):
 
 
 class Championship():
+    """Define a Championship Class.
+
+    Keyword arguments:
+        param1(p) -- a list of players objects, which must have a length
+            equal to one of the following numbers: 2, 4, 8, 16, 32, 64, 128,
+            256, 512, 1024 or 2048. Otherwise, the check_players method won't
+            allow the championship to continue. 
+        param2(name) -- a str with the name of the championship.
+
+    Instance variables:
+        - n_phases -- a int representing the number of phases the
+            championship will have;
+        - print_slow -- a bool which controls the print_speed method in the
+            championship objects (Default: True);
+        - game.print_slow - a bool which controls the print_speed method of the
+            games objects created by the set_phase method of the Championship
+            Class. (Default: False);
+        - players_phase -- a list of players objects. At first, it is set to
+            the param1(p) of Championship. Each time the play_phase method is
+            called, though, the players_phase variable is changed to a list of
+            the winners of that phase (with half the lenght of the previous
+            list);
+        - phase_names -- initially an empty list, which will be populated by
+            strings created by the name_of_phases method.
+    """
     def __init__(self, p, name):
         self.p = p
         self.name = name
         self.n_phases = int(math.log(len(p), 2))
         self.print_slow = True
-        self.game_print_slow = True
+        self.game_print_slow = False
         self.players_phase = p
         self.phase_names = []
 
     def print_speed(self, str):
+        """Print a string followed by a pause of 2 seconds, if the print_slow
+        variable is set to True.
+        Just call the print function, if the print_slow variable is False.
+
+        Keyword argument:
+            param(str) -- the str to be printed.
+        """
         if self.print_slow:
             print(str)
             time.sleep(2)
@@ -587,6 +618,13 @@ class Championship():
             print(str)
 
     def check_players(self):
+        """Print a message and return 'not OK' if the lenght of players
+        list in the game is not in the following list:
+            [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048].
+
+        This list of number appears in the if statement below, as a list
+        comprehension.
+        """
         if len(self.p) not in [2**x for x in range(1, 12)]:
             print('\nFor this kind of Championship, we need the number of '
                   'players to be one of the following:\n\n'
@@ -595,6 +633,12 @@ class Championship():
             return 'not OK'
 
     def name_of_phases(self):
+        """Create the phases names and append them in the phase_names list.
+
+        Besides, depending on the length of phase_names, add special
+            nomenclatures (Final, Semi-Finals and Quarter-Finals) to the last
+            three phases.
+        """
         for index in range(self.n_phases):
             self.phase_names.append('Phase ' + str(index+1))
         if len(self.phase_names) == 1:
@@ -608,16 +652,39 @@ class Championship():
             self.phase_names[-3] += ' (Quarter-Finals)'
 
     def set_phase(self):
+        """ Set each phase of the Championship object, with the following steps:
+
+            - create an empty games list;
+            - create a pair_players list, populated by lists with two players
+            each, players taken from the players_phase list. Thus, pair_players
+            will have half the length of players_phase;
+            - a for loop will loop over each list of two players, in the
+            pair_players list, and use these pair of players to create Game_wins
+            objects and append them to the games list;
+
+            Return the games list.
+        """
         self.games = []
         self.pair_players = [[self.players_phase[x], self.players_phase[x+1]]
                              for x in range(0, len(self.players_phase), 2)]
         for index in range(len(self.pair_players)):
-            name = 'Game ' + str(index+1)
-            self.games.append(Game_wins(self.pair_players[index], name,
+            game_name = 'Game ' + str(index+1)
+            self.games.append(Game_wins(self.pair_players[index], game_name,
                                         3, self.game_print_slow))
         return self.games
 
     def play_phase(self):
+        """ Play a complete phase of the Championship, following these steps:
+
+            - the set_phase method is called and the returned list is stored
+                in the games variable;
+            - an empty winners list is created;
+            - a for loop will loop over each game in the games list:
+                - the play_game method of the game object is called and the winner
+                    player object is append in the winners list;
+            - when the loop is done, the Championship players_phase variable is
+                changed to the value stored here in the winners list;
+        """
         self.games = self.set_phase()
         self.winners = []
         for game in self.games:
@@ -626,6 +693,17 @@ class Championship():
         self.players_phase = self.winners
 
     def play_championship(self):
+        """ Play a complete championship of rps, with the following steps:
+
+            - call the check_players method and interrupt the championship if
+                the number of players is "not OK";
+            - call the name_of_phases method;
+            - use a for loop to:
+                - print the phase name;
+                - call the play_phase method for that phase;
+            - call the declare_champion method, when the championship is done
+                playing the last phase.
+        """
         check_players = self.check_players()
         if check_players == 'not OK':
             return
@@ -636,6 +714,7 @@ class Championship():
         self.declare_champion()
 
     def declare_champion(self):
+        """ Print messages declaring the final champion of the Championship."""
         self.print_speed(f'End of the {self.name}!\n')
         self.print_speed('The final champion is')
         self.print_speed(f'\n** {self.players_phase[0].name}**\n')
@@ -691,7 +770,7 @@ class Championship_points(Championship):
         print()
         print(final)
 
-
+"""
 if __name__ == '__main__':
     p1 = Cyclic_player("Fabrício")
     p2 = Player('p2')
@@ -704,7 +783,6 @@ if __name__ == '__main__':
     game1.play_game()
     game2.play_game()
 
-"""
 if __name__ == '__main__':
     p1 = Player('p1')
     p2 = Player('p2')
@@ -717,16 +795,15 @@ if __name__ == '__main__':
 
     champ.play_championship()
 
-
+"""
 if __name__ == '__main__':
-    number_of_players = 4
+    number_of_players = 2048
     players = []
     for n in range(number_of_players - 1):
         players.append(Player('Player ' + str(n+1)))
-    players.append(Human_player())
+    players.append(Human_player("Fabrício"))
     champ = Championship(players, 'Championship')
     if number_of_players > 32:
         champ.print_slow = False
         champ.game_print_slow = False
     champ.play_championship()
-"""
