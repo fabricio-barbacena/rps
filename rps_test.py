@@ -103,8 +103,54 @@ print(gamelist)
 
 """    
         
-        
 
+class Championship_points(Championship):
+    def __init__(self, p, name):
+        Championship.__init__(self, p, name)
+        self.print_slow = True
+        self.game_print_slow = True
+        self.points = {}
+        self.players_pairs = []
+        self.games = []
+
+    def print_speed(self, str):
+        if self.print_slow:
+            print(str)
+            time.sleep(2)
+        else:
+            print(str)
+
+    def set_players_in_game(self):
+        self.players_pairs = list(itertools.combinations(self.p, 2))
+        pprint.pprint(self.players_pairs)
+        for player in self.p:
+            self.points.setdefault(player.name, 0)
+
+    def set_games(self):
+        for pair in self.players_pairs:
+            self.games.append(Game_wins(pair,
+                                        'Game ' +
+                                        str(self.players_pairs.index(pair)+1),
+                                        3,
+                                        self.game_print_slow)
+                              )
+
+    def play_championship(self):
+        points = self.points
+        self.set_players_in_game()
+        self.set_games()
+        for game in self.games:
+            winner = game.play_game()
+            points[winner.name] += 1
+            self.sorting_wins
+        self.points = points
+        self.sorting_wins()
+
+    def sorting_wins(self):
+        final = sorted(self.points.items(), reverse=True,
+                       key=lambda kv: (kv[1], kv[0]))
+        print()
+        print(final)
 
 
 
