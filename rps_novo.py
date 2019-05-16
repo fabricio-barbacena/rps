@@ -1,17 +1,17 @@
-import random
-import time
-import string
-import math
-import itertools
-import pprint
-
 """
     This program defines classes in order to play single games and complete
 championships of Rock, Paper, Scissors between two or more players, but
 always with games between two players.
 
-    RPS stands for 'Rock, Paper, Scissors'.
+    RPS stands for 'Rock, Paper, Scissors'.   
 """
+
+import random
+import time
+import string
+import math
+import itertools
+
 
 """
     The list below includes the three possible moves and will be used by all
@@ -26,7 +26,6 @@ class Player:
 
     It is the parent class to the following subclasses:
         - Same_move_player;
-        - Rock_player;
         - Cyclic_player;
         - Human_player;
         - Copycat_player.
@@ -57,9 +56,9 @@ class Player:
         """Inside the play_round method (from the Game class), take the
         moves of both players and register them in the respective variables.
 
-        In this current version of the module, this method is built with
+        In this current version of the rps module, this method is built with
         the only purpose of giving the Copycat_player information to
-        reproduze the oponent's moves.
+        reproduze the oponent's last move.
 
         Keyword arguments:
             param1(my_move) -- the player's move in that round (a str).
@@ -75,12 +74,16 @@ class Player:
 class Same_move_player(Player):
     """Define a subclass of Player, which always plays the same move.
 
+    It is the parent class of the subclass Rock_player;
+
     Keyword argument:
         param(name): a str with the player's name.
 
     Instance variable:
         my_move_recorder(str) -- set by choosing randomly one element of
             the 'moves' list, which stays the same during all the game.
+            If 'rock' is chosen, this player will behave similarly to the
+            Rock_player subclass.
 
     Inherit from the Player class:
         - the enemy_move_recorder instance variable;
@@ -113,7 +116,7 @@ class Rock_player(Same_move_player):
         self.my_move_recorder = 'rock'
 
     def move(self):
-        """return 'rock'."""
+        """Return 'rock'."""
         return self.my_move_recorder
 
 
@@ -247,7 +250,7 @@ class Copycat_player(Player):
 
 
 class Game:
-    """Define the Game class of the Rock, Paper, Scissors module.
+    """Define the basic Game class of the Rock, Paper, Scissors module.
 
     This is the parent class to the following subclasses:
         - Game_rounds;
@@ -295,11 +298,11 @@ class Game:
 
         - First, play_round calls the move method for each player;
         - The players' moves are printed in a message;
+        - The round_winner method is called and becomes the value for the
+        winner variable;
         - The learn method is called for each player and the respective moves
         are stored in her/his/its my_move_recorder and my_enemy_recorder
         variables;
-        - The round_winner method is called and becomes the value of the
-        winner variable;
         - A message is printed, declaring the round final result.
 
         Return the winner variable (a str).
@@ -336,8 +339,8 @@ class Game:
         if move1 == move2:
             return 'tie'
         elif (move1 == 'rock' and move2 == 'scissors' or
-              move1 == 'scissors'and move2 == 'paper' or
-              move1 == 'paper'and move2 == 'rock'):
+              move1 == 'scissors' and move2 == 'paper' or
+              move1 == 'paper' and move2 == 'rock'):
             return self.p[0].name
         else:
             return self.p[1].name
@@ -359,12 +362,11 @@ class Game:
             return
         else:
             self.play_round()
-            print()
-            self.print_speed('Game over!\n')
+            self.print_speed('\nGame over!\n')
 
 
 class Game_rounds(Game):
-    """Define a Game subsclass.
+    """Define a subsclass of the Game class.
 
     Keyword arguments:
         param1(p) -- a list of players objects, which must have a length of 2.
@@ -393,6 +395,9 @@ class Game_rounds(Game):
         self.p[0].wins = 0
         self.p[1].wins = 0
 
+    # def print_intro(self): => colocar instance variáveis e
+    # fazer esta função aqui, para evitar de imprimir várias vezes a intro.
+
     def introduction(self):
         """Print introductory messages, explaining how the game works."""
         self.print_speed(f'This game has {self.rounds} rounds.\n')
@@ -404,14 +409,14 @@ class Game_rounds(Game):
 
     def play_game(self):
         """Play a complete game of rps, with the number of rounds defined by the
-        rounds attribute and the following steps:
+        rounds instance variable and having the following steps:
 
             - Print the game name and "Game Start";
             - call the check_players method;
                 - stop the game if the check_players call returns 'not OK';
             - call the introduction method;
             - call the play_round method in a for loop
-                    (number of loops = rounds attribute);
+                    (number of loops = rounds instance variable);
                 - increment one to p[0].wins or to p[1].wins
                     (depending on the round winner).
                 - if there is a tie: p[0].wins and p[1].wins stay the same.
@@ -438,7 +443,7 @@ class Game_rounds(Game):
             self.final_winner()
 
     def final_winner(self):
-        """Declare who is the final winner or if the game ended in a tie."""
+        """Declare who is the final winner."""
         if self.p[0].wins > self.p[1].wins:
             self.print_speed(f'FINAL SCORE\nAFTER {self.rounds} ROUNDS:\n')
             self.print_speed(f'{self.p[0].name}: {self.p[0].wins}, '
@@ -459,7 +464,7 @@ class Game_rounds(Game):
 
 
 class Game_wins(Game):
-    """Define a Game subsclass.
+    """Define a subsclass of the Game class.
 
     Keyword arguments:
         param1(p) -- a list of players objects, which must have a length of 2.
@@ -507,15 +512,17 @@ class Game_wins(Game):
                 - Stop the game if the check_players call returns 'not OK';
             - Call the introduction method;
             - Call the play_round method in a while loop:
-                - The loop will end if one of the players reaches the number of wins;
+                - The loop will end if one of the players reaches the defined
+                    number of wins;
                 - The loop will break if the game reaches 50 rounds;
                 - Increment one to p[0].wins or to p[1].wins in every round
                     (depending on the round winner);
-                - If there is a tie: p[0].wins and p[1].wins stay the same;
-                - Each loop increments one unit to the rounds attribute;
+                - If there is a tie in the round: p[0].wins and p[1].wins
+                    stay the same;
+                - Each loop increments one unit to the round instance variable;
             - Print 'Game over' and call the final_winner method;
-            - Finally, p[0].wins and p[1].wins are set to 0 again (so that the players
-                    might be used in another game, in a Championship class).
+            - Finally, p[0].wins and p[1].wins are set to 0 (so that the
+                players might be used in a new game, in a Championship class).
         """
         self.print_speed(f'\n{self.name.upper()}\n')
         self.print_speed('\nGame start!\n')
@@ -529,7 +536,6 @@ class Game_wins(Game):
                     break
                 self.print_speed(f'Round {str(self.round)}:\n')
                 winner = self.play_round()
-                print()
                 if winner == self.p[0].name:
                     self.p[0].wins += 1
                     winner_end = self.p[0] # testar essa linha. O que ela está fazendo?
@@ -538,7 +544,7 @@ class Game_wins(Game):
                     winner_end = self.p[1] # testar essa linha. O que ela está fazendo?
                 else:
                     pass
-                self.print_speed(f'{self.p[0].name}: {self.p[0].wins}, '
+                self.print_speed(f'\n{self.p[0].name}: {self.p[0].wins}, '
                                  f'{self.p[1].name}: {self.p[1].wins}\n\n')
                 self.round += 1
             self.print_speed('Game over!\n')
@@ -548,7 +554,7 @@ class Game_wins(Game):
             return winner_end # testar essa linha. O que ela está fazendo?
 
     def final_winner(self):
-        """Declare who is the final winner or if the game ended in a tie."""
+        """Declare who is the final winner."""
         if self.p[0].wins == self.wins:
             self.print_speed(f'FINAL SCORE \nAFTER {self.round-1} ROUNDS:\n')
             self.print_speed(f'{self.p[0].name}: {self.p[0].wins}, '
@@ -584,7 +590,7 @@ class Championship():
         - print_slow -- a bool which controls the print_speed method in the
             championship objects (Default: True);
         - game.print_slow - a bool which controls the print_speed method of the
-            games objects created by the set_phase method of the Championship
+            game objects created by the set_phase method of the Championship
             Class. (Default: False);
         - players_phase -- a list of players objects. At first, it is set to
             the param1(p) of Championship. Each time the play_phase method is
@@ -599,7 +605,7 @@ class Championship():
         self.name = name
         self.n_phases = int(math.log(len(p), 2))
         self.print_slow = True
-        self.game_print_slow = False
+        self.game_print_slow = True
         self.players_phase = p
         self.phase_names = []
 
@@ -652,7 +658,7 @@ class Championship():
             self.phase_names[-3] += ' (Quarter-Finals)'
 
     def set_phase(self):
-        """ Set each phase of the Championship object, with the following steps:
+        """ Set each phase of the Championship object, with these steps:
 
             - create an empty games list;
             - create a pair_players list, populated by lists with two players
@@ -680,8 +686,8 @@ class Championship():
                 in the games variable;
             - an empty winners list is created;
             - a for loop will loop over each game in the games list:
-                - the play_game method of the game object is called and the winner
-                    player object is append in the winners list;
+                - the play_game method of the game object is called and the
+                    winner player object is appended to the winners list;
             - when the loop is done, the Championship players_phase variable is
                 changed to the value stored here in the winners list;
         """
@@ -770,6 +776,48 @@ class Championship_points(Championship):
         print()
         print(final)
 
+
+def play_against_7_players():
+    
+    your_name = input('Enter your name: ')
+
+    human = Human_player(your_name)
+    same = Same_move_player('Same Move Player')
+    cyclic = Cyclic_player('Cyclic Player')
+    rock = Rock_player('Rock Player')
+    random1 = Player('Random Player #1')
+    copycat = Copycat_player('Copycat Player')
+    random2 = Player('Random Player #2')
+    random3 = Player('Random Player #3')
+
+    players = [human, same, cyclic, rock, random1, copycat, random2, random3]
+
+    champ = Championship(players, "THE REWIEWER'S CUP! \N\N ENJOY!!!")
+    champ.print_slow = True
+    champ.game_print_slow = True
+
+    champ.play_championship()
+
+def create_players_and_play():
+    
+    your_name = input('Enter your name: ')
+    number_of_players = 2048
+    players = []
+    for n in range(number_of_players - 1):
+        players.append(Player('Player ' + str(n+1)))
+    players.append(Human_player(your_name))
+    champ = Championship(players, 'THE 2048 CUP!')
+    if number_of_players > 8:
+        champ.print_slow = True
+        champ.game_print_slow = False
+    champ.play_championship()
+
+
+if __name__ == '__main__':
+    play_agains_7_players()
+    create_players_and_play()
+
+
 """
 if __name__ == '__main__':
     p1 = Cyclic_player("Fabrício")
@@ -795,8 +843,8 @@ if __name__ == '__main__':
 
     champ.play_championship()
 
-"""
-if __name__ == '__main__':
+
+
     number_of_players = 2048
     players = []
     for n in range(number_of_players - 1):
@@ -806,4 +854,5 @@ if __name__ == '__main__':
     if number_of_players > 32:
         champ.print_slow = False
         champ.game_print_slow = False
-    champ.play_championship()
+    champ.play_championship()  
+"""
