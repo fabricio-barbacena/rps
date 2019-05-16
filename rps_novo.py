@@ -777,8 +777,8 @@ class Championship_points(Championship):
         print(final)
 
 
-def play_against_7_players():
-    
+def champ_8_players():
+    """Play a Championship with 8 players (all playes subclasses included)""" 
     your_name = input('Enter your name: ')
 
     human = Human_player(your_name)
@@ -799,7 +799,7 @@ def play_against_7_players():
     champ.play_championship()
 
 def create_players_and_play():
-    
+    "Create 2047 Player objects and one Player_human, and make them play!"
     your_name = input('Enter your name: ')
     number_of_players = 2048
     players = []
@@ -812,47 +812,6 @@ def create_players_and_play():
         champ.game_print_slow = False
     champ.play_championship()
 
-
 if __name__ == '__main__':
-    play_agains_7_players()
+    champ_8_players()
     create_players_and_play()
-
-
-"""
-if __name__ == '__main__':
-    p1 = Cyclic_player("Fabrício")
-    p2 = Player('p2')
-
-    players = [p1, p2]
-
-    game1 = Game_rounds(rounds=5, name="Semi-final", p=players)
-    game2 = Game_rounds(players, "Final Challenge", 3)
-
-    game1.play_game()
-    game2.play_game()
-
-if __name__ == '__main__':
-    p1 = Player('p1')
-    p2 = Player('p2')
-    p3 = Player('p3')
-    p4 = Human_player('p4')
-
-    players = [p1, p2, p3, p4]
-
-    champ = Championship_points(players, 'Champ')
-
-    champ.play_championship()
-
-
-
-    number_of_players = 2048
-    players = []
-    for n in range(number_of_players - 1):
-        players.append(Player('Player ' + str(n+1)))
-    players.append(Human_player("Fabrício"))
-    champ = Championship(players, 'Championship')
-    if number_of_players > 32:
-        champ.print_slow = False
-        champ.game_print_slow = False
-    champ.play_championship()  
-"""
