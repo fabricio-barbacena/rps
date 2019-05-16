@@ -168,7 +168,7 @@ class Cyclic_player(Player):
         Return a str.
         """
         if not self.setup_executed:
-            self.setup_choice()
+            return self.setup_choice()
         else:
             if self.my_move_recorder == 'rock':
                 return 'paper'
@@ -749,7 +749,7 @@ def champ_8_players():
 
     players = [human, same, cyclic, rock, random1, copycat, random2, random3]
 
-    champ = Championship(players, "THE REWIEWER'S CUP! \N\N ENJOY!!!")
+    champ = Championship(players, "THE REWIEWER'S CUP! \n\n ENJOY!!!")
     champ.print_slow = True
     champ.game_print_slow = True
 
@@ -769,6 +769,6 @@ def create_players_and_play():
         champ.game_print_slow = False
     champ.play_championship()
 
-if __name__ ==  '': # change this line to '__main__'
+if __name__ ==  '__main__': # change this line to '__main__'
     champ_8_players()
     create_players_and_play()
