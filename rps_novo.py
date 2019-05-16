@@ -3,7 +3,13 @@
 championships of Rock, Paper, Scissors between two or more players, but
 always with games between two players.
 
-    RPS stands for 'Rock, Paper, Scissors'.   
+    RPS stands for 'Rock, Paper, Scissors'.
+
+    This module defines 3 classes (Player, Game and Championship) as well as
+the respective Player and Game subclasses. It also defines two functions
+(champ_8_players and create_players_and_play), which will be called in the
+script footer.
+
 """
 
 import random
@@ -538,10 +544,10 @@ class Game_wins(Game):
                 winner = self.play_round()
                 if winner == self.p[0].name:
                     self.p[0].wins += 1
-                    winner_end = self.p[0] # testar essa linha. O que ela está fazendo?
+                    # winner_end = self.p[0] # testar essa linha. O que ela está fazendo?
                 elif winner == self.p[1].name:
                     self.p[1].wins += 1
-                    winner_end = self.p[1] # testar essa linha. O que ela está fazendo?
+                    # winner_end = self.p[1] # testar essa linha. O que ela está fazendo?
                 else:
                     pass
                 self.print_speed(f'\n{self.p[0].name}: {self.p[0].wins}, '
@@ -551,7 +557,7 @@ class Game_wins(Game):
             self.final_winner()
             self.p[0].wins = 0
             self.p[1].wins = 0
-            return winner_end # testar essa linha. O que ela está fazendo?
+            # return winner_end # testar essa linha. O que ela está fazendo?
 
     def final_winner(self):
         """Declare who is the final winner."""
@@ -728,55 +734,6 @@ class Championship():
                          f'{self.players_phase[0].name.upper()}!\n')
 
 
-class Championship_points(Championship):
-    def __init__(self, p, name):
-        Championship.__init__(self, p, name)
-        self.print_slow = True
-        self.game_print_slow = True
-        self.points = {}
-        self.players_pairs = []
-        self.games = []
-
-    def print_speed(self, str):
-        if self.print_slow:
-            print(str)
-            time.sleep(2)
-        else:
-            print(str)
-
-    def set_players_in_game(self):
-        self.players_pairs = list(itertools.combinations(self.p, 2))
-        pprint.pprint(self.players_pairs)
-        for player in self.p:
-            self.points.setdefault(player.name, 0)
-
-    def set_games(self):
-        for pair in self.players_pairs:
-            self.games.append(Game_wins(pair,
-                                        'Game ' +
-                                        str(self.players_pairs.index(pair)+1),
-                                        3,
-                                        self.game_print_slow)
-                              )
-
-    def play_championship(self):
-        points = self.points
-        self.set_players_in_game()
-        self.set_games()
-        for game in self.games:
-            winner = game.play_game()
-            points[winner.name] += 1
-            self.sorting_wins
-        self.points = points
-        self.sorting_wins()
-
-    def sorting_wins(self):
-        final = sorted(self.points.items(), reverse=True,
-                       key=lambda kv: (kv[1], kv[0]))
-        print()
-        print(final)
-
-
 def champ_8_players():
     """Play a Championship with 8 players (all playes subclasses included)""" 
     your_name = input('Enter your name: ')
@@ -812,6 +769,6 @@ def create_players_and_play():
         champ.game_print_slow = False
     champ.play_championship()
 
-if __name__ == '__main__':
+if __name__ ==  '': # change this line to '__main__'
     champ_8_players()
     create_players_and_play()
