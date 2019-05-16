@@ -389,7 +389,7 @@ class Game_rounds(Game):
     Instance variables:
         - p[0].wins -- register the first player's wins (initial value: 0);
         - p[1].wins -- register the second player's wins (initial value: 0).
-            
+
     Inherit from the Game class the following methods:
         - print_speed;
         - check_players;
@@ -403,9 +403,6 @@ class Game_rounds(Game):
         self.display_intro = display_intro
         self.p[0].wins = 0
         self.p[1].wins = 0
-
-    # def print_intro(self): => colocar instance variáveis e
-    # fazer esta função aqui, para evitar de imprimir várias vezes a intro.
 
     def introduction(self):
         """Print introductory messages, explaining how the game works."""
@@ -494,7 +491,7 @@ class Game_wins(Game):
         - round -- register the number of rounds played (initial value: 1);
         - p[0].wins -- register the first player's wins (initial value: 0);
         - p[1].wins -- register the second player's wins (initial value: 0);
-            
+
     Inherit from the Game class the following methods:
         - print_speed;
         - check_players;
@@ -601,9 +598,9 @@ class Championship():
             256, 512, 1024 or 2048. Otherwise, the check_players method won't
             allow the championship to continue;
         param2(name) -- a str with the name of the championship;
-        param3(first_game_display_intro) -- a bool which controls whether the introduction
-            method of the games will be called once, in the first game of the
-            championship, or not (Default: True).
+        param3(first_game_intro) -- a bool which controls whether the
+            introduction method of the games will be called once, in the first
+            game of the championship, or not (Default: True).
 
     Instance variables:
         - n_phases -- a int representing the number of phases the
@@ -662,9 +659,9 @@ class Championship():
             return 'not OK'
 
     def name_of_phases(self):
-        """Create the phases names and append them in the phase_names list.
+        """Create the phases names and append them to the phase_names list.
 
-        Besides, depending on the length of phase_names, add special
+        Besides, depending on the length of phase_names list, add special
             nomenclatures (Final, Semi-Finals and Quarter-Finals) to the last
             three phases.
         """
@@ -683,13 +680,17 @@ class Championship():
     def set_phase(self):
         """ Set each phase of the Championship object, with these steps:
 
-            - create an empty games list;
-            - create a pair_players list, populated by lists with two players
-            each, players taken from the players_phase list. Thus, pair_players
-            will have half the length of players_phase;
+            - create an empty list called 'games';
+            - create a 'pair_players' list, populated by lists with two players
+                each, players taken from the players_phase list. Thus,
+                pair_players will have half the length of players_phase;
             - a for loop will loop over each list of two players, in the
-            pair_players list, and use these pair of players to create Game_wins
-            objects and append them to the games list;
+                pair_players list, and use these pair of players to create
+                Game_wins objects and append them to the games list;
+            - the if/else statements are structured in this method to determine
+                whether the first game of the championship will display an
+                introduction (if statement part, when first_game_intro is True)
+                or not (the else part).
 
             Return the games list.
         """
@@ -727,8 +728,9 @@ class Championship():
             - a for loop will loop over each game in the games list:
                 - the play_game method of the game object is called and the
                     winner player object is appended to the winners list;
-            - when the loop is done, the Championship players_phase variable is
-                changed to the value stored here in the winners list;
+            - when the loop is done, the Championship players_phase instance
+                    variable is changed to the value stored here in the
+                    winners list;
         """
         self.games = self.set_phase()
         self.winners = []
@@ -770,17 +772,17 @@ class Championship():
 
 
 def champ_8_players():
-    """Play a Championship with 8 players (all playes subclasses included)""" 
+    """Play a Championship with 8 players (all players subclasses included)""" 
     your_name = input('Enter your name: ')
 
     human = Human_player(your_name)
-    same = Same_move_player('Same Move Player')
-    cyclic = Cyclic_player('Cyclic Player')
+    same = Same_move_player('Same Move')
+    cyclic = Cyclic_player('Cyclic')
     rock = Rock_player('Rock Player')
-    random1 = Player('Random Player #1')
-    random2 = Player('Random Player #2')
-    random3 = Player('Random Player #3')
-    copycat = Copycat_player('Copycat Player')
+    random1 = Player('Ann (Random)')
+    random2 = Player('Alf (Random)')
+    random3 = Player('John (Random)')
+    copycat = Copycat_player('Copycat')
 
     players = [human, same, cyclic, rock, random1, random2, random3, copycat]
 
@@ -808,7 +810,8 @@ if __name__ ==  '__main__':
     champ_8_players()
     print('Dear Reviewer, prepare to be amazed by the thousands of RPS games '
           'being played in front of you!')
-    time.sleep(2)
+    time.sleep(2.5)
     print('Your human player will play at first in the Game 1024')
+    time.sleep(1)
     print("Ready??? Let's go!")
     create_players_and_play()
