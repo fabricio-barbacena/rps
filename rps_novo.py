@@ -410,15 +410,15 @@ class Game_rounds(Game):
             self.print_speed(f'This game has {self.rounds} rounds.\n')
             self.print_speed('The player who has more victories after '
                              'all the rounds is the final winner!\n')
-            self.print_speed('If the players have the same number of victories '
-                             'by the end of the game,')
+            self.print_speed('If the players have the same number of '
+                             'victories by the end of the game,')
             self.print_speed('it will be declared a draw.\n\n')
         else:
             pass
 
     def play_game(self):
-        """Play a complete game of rps, with the number of rounds defined by the
-        rounds instance variable and having the following steps:
+        """Play a complete game of rps, with the number of rounds defined by
+        the rounds instance variable and having the following steps:
 
             - Print the game name and "Game Start";
             - call the check_players method;
@@ -510,12 +510,13 @@ class Game_wins(Game):
     def introduction(self):
         """Print introductory messages, explaining how the game works."""
         if self.display_intro:
-            self.print_speed(f'The player who gets {self.wins} victories first '
-                             'wins the Game!\n')
+            self.print_speed(f'The player who gets {self.wins} victories '
+                             'first wins the Game!\n')
             self.print_speed('There is no limit of rounds here.\n')
-            self.print_speed('However, if the players keep playing the same moves '
-                             'over and over again,')
-            self.print_speed('the game will come to an end at the 50th round.\n')
+            self.print_speed('However, if the players keep playing the same '
+                             'moves over and over again,')
+            self.print_speed('the game will come to an end at the 50th '
+                             'round.\n')
         else:
             pass
 
@@ -714,8 +715,10 @@ class Championship():
             self.game_display_intro = False
             for index in range(len(self.pair_players)):
                 game_name = 'Game ' + str(index+1)
-                self.games.append(Game_wins(self.pair_players[index], game_name,
-                                            3, self.game_print_slow,
+                self.games.append(Game_wins(self.pair_players[index],
+                                            game_name,
+                                            3,
+                                            self.game_print_slow,
                                             self.game_display_intro))
         return self.games
 
@@ -766,13 +769,13 @@ class Championship():
         """ Print messages declaring the final champion of the Championship."""
         self.print_speed(f'End of the {self.name}!\n')
         self.print_speed('The final champion is')
-        self.print_speed(f'\n** {self.players_phase[0].name}**\n')
+        self.print_speed(f'\n** {self.players_phase[0].name} **\n')
         self.print_speed('CONGRATULATIONS, '
                          f'{self.players_phase[0].name.upper()}!\n')
 
 
 def champ_8_players():
-    """Play a Championship with 8 players (all players subclasses included)""" 
+    """Play a Championship with 8 players (all players subclasses included)"""
     your_name = input('Enter your name: ')
 
     human = Human_player(your_name)
@@ -786,11 +789,12 @@ def champ_8_players():
 
     players = [human, same, cyclic, rock, random1, random2, random3, copycat]
 
-    champ = Championship(players, "** !!!REWIEWER'S CUP!!! **")
+    champ = Championship(players, "\n\n** !!!REWIEWER'S CUP!!! **")
     champ.print_slow = True
     champ.game_print_slow = True
 
     champ.play_championship()
+
 
 def create_players_and_play():
     "Create 2047 Player objects and one Player_human, and make them play!"
@@ -800,18 +804,19 @@ def create_players_and_play():
     for n in range(number_of_players - 1):
         players.append(Player('Player ' + str(n+1)))
     players.append(Human_player(your_name))
-    champ = Championship(players, 'THE 2048 CUP!')
+    champ = Championship(players, '2048 CUP!')
     if number_of_players > 8:
         champ.print_slow = True
         champ.game_print_slow = False
     champ.play_championship()
 
-if __name__ ==  '__main__':
+
+if __name__ == '__main__':
     champ_8_players()
     print('Dear Reviewer, prepare to be amazed by the thousands of RPS games '
           'being played in front of you!')
-    time.sleep(2.5)
+    time.sleep(3.5)
     print('Your human player will play at first in the Game 1024')
     time.sleep(1)
-    print("Ready??? Let's go!")
+    print("Ready??? Let's go!\n")
     create_players_and_play()
